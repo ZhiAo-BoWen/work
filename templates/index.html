@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>工作记录表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script>
+      window.APP_CONFIG = {
+        statusOptions: {{ status_options | tojson }},
+        today: "{{ today }}",
+      };
+    </script>
+    <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <h1>工作记录表</h1>
+        <div class="legend">
+          {% for key, option in status_options.items() %}
+          <span class="legend-item">
+            <span
+              class="legend-color"
+              style="background-color: {{ option.color }}"
+            ></span>
+            {{ option.label }}
+          </span>
+          {% endfor %}
+          <span class="legend-item">
+            <span class="legend-color" style="background-color: #f0f0f0; border: 1px solid #ccc;"></span>
+            未设置
+          </span>
+        </div>
+      </header>
+
+      <div class="main-container">
+        <aside class="summary-sidebar">
+          <div class="summary-section">
+            <h3>当月统计</h3>
+            <div class="summary-item">
+              <span class="summary-label">正常工作：</span>
+              <span id="normalCount" class="summary-value">0</span> 天
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">请假天数：</span>
+              <span id="leaveCount" class="summary-value">0</span> 天
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">当月工资：</span>
+              <span id="totalSalary" class="summary-value">0</span> 元
+            </div>
+          </div>
+          
+          <div class="summary-section summary-total">
+            <h3>总计</h3>
+            <div class="summary-item">
+              <span class="summary-label">总上班天数：</span>
+              <span id="totalWorkdays" class="summary-value">0</span> 天
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">总收入：</span>
+              <span id="totalIncome" class="summary-value">0</span> 元
+            </div>
+          </div>
+        </aside>
+
+        <main class="calendars-container" id="calendarsContainer">
+          <!-- 日历将通过 JavaScript 动态生成 -->
+        </main>
+      </div>
+    </div>
+
+    <div id="statusPopover" class="popover" hidden>
+      <div class="popover-content">
+        <h2 id="popoverDate"></h2>
+        <div class="popover-options" id="statusOptions"></div>
+        <button id="closePopover" class="close-btn">关闭</button>
+      </div>
+    </div>
+  </body>
+</html>
+
